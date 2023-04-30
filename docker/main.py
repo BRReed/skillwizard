@@ -1,4 +1,5 @@
 import csv
+from os import listdir
 from random import randrange
 
 def welcome_message():
@@ -17,28 +18,21 @@ def get_input():
 def get_qa_list():
     return {}
 
-def get_csv_list():
-    # temporary test func until get mysql up
-    csv_dict = {}
-    with open('./modules/linux_CLI_basics.csv', newline='') as file:
-        data = csv.reader(file, delimiter=',', quotechar='|')
-        for row in data:
-            csv_dict[row[0]] = row[1]
-    return csv_dict
+def get_module_csv_list():
+    "Returns list of file names from modules subdir"
+    return [file for file in listdir("./modules")]
 
 def main():
     welcome_message()
-    qa_dict= get_csv_list() # remove once mysql up
-    #qa_dict = get_qa_list() #uncomment once mysql up
-    temp_qa_list = []
-    for key, i in enumerate(qa_dict):
-       print(i , " " , key)
-       temp_qa_list.append(key)
-    if not qa_dict:
-        print("Unable to connect to mysql server")
+    module_names = get_module_csv_list()
+    if not module_names:
+        print("Unable to locate modules.")
         exit()
-    print("Which module would you like? Add multiple with space between module numbers")
-    total_questions = len(qa_dict)
+    print("Please enter the module numbers you want to practice separated by a space.")
+    for i, module in enumerate(module_names):
+        print(i, ". ", module)
+
+
 
 
 main()
