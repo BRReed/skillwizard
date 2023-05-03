@@ -13,7 +13,10 @@ def welcome_message():
     )
 
 def get_input():
-    return input(">")
+    i = input(">")
+    if i == "-1":
+        exit()
+    return i
 
 def get_qa_list():
     return {}
@@ -28,12 +31,18 @@ def print_available_modules(module_list):
 
 def make_input_list(s):
     l = []
+    cur = ""
     for c in s:
         if not c.isnumeric() and not c.isspace():
             print("Invalid entry " + c + ", please try again.")
             return
         if c.isnumeric():
-            l.append(c)
+            cur += c
+        elif c.isspace() and cur:
+            l.append(cur)
+            cur = ""
+    if cur:
+        l.append(cur)
     return l
     
 
@@ -47,8 +56,6 @@ def main():
         print("Please enter the module numbers you want to practice separated by a space.")
         print_available_modules(module_names)
         user_modules = get_input()
-        if user_modules == "-1":
-            exit()
         selected_modules_list = make_input_list(user_modules)
         if not selected_modules_list:
             print("Enter '-1' to exit")
