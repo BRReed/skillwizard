@@ -47,6 +47,8 @@ def main():
         print("Please enter the module numbers you want to practice separated by a space.")
         print_available_modules(module_names)
         user_modules = get_input()
+        if user_modules == "-1":
+            exit()
         selected_modules_list = make_input_list(user_modules)
         if not selected_modules_list:
             print("Enter '-1' to exit")
