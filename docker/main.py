@@ -1,6 +1,6 @@
 from csv import reader
 from os import listdir
-from random import randrange
+from random import choice as rChoice
 
 def welcome_message():
     print("""
@@ -75,6 +75,15 @@ def make_module_dict(modules_list):
             d[question] = answer
     return d
 
+def qa_loop(module_dict, user_input='0'):
+    while user_input != '-1':
+        cur_key = rChoice(list(module_dict.keys()))
+        print(cur_key)
+        user_input = input(">")
+
+
+    
+
 def main():
     welcome_message()
     module_names = get_module_csv_list()
@@ -87,7 +96,7 @@ def main():
         user_modules = get_input()
         selected_modules_list = make_input_list(user_modules)
         if not selected_modules_list:
-            print("Enter '-1' to exit")
+            print("Enter '-1' at any time to exit")
             continue
         break
     filenames_list, invalid_list = get_selected_csv_filenames_list(
@@ -95,11 +104,9 @@ def main():
     if invalid_list:
         print(invalid_list, " were invalid module numbers and were not added")
     module_dict = make_module_dict(filenames_list)
+    qa_loop(module_dict)
 
-    
-
-
-
+# start while loop for questions and answers
 
 main()
 
