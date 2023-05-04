@@ -80,6 +80,13 @@ def qa_loop(module_dict, user_input='0'):
         cur_key = rChoice(list(module_dict.keys()))
         print(cur_key)
         user_input = input(">")
+        if user_input == module_dict[cur_key]:
+            answer = user_input
+        else:
+            answer = wrong_answer_check(user_input)
+
+def wrong_answer_check(answer):
+    pass
 
 
     
@@ -105,8 +112,6 @@ def main():
         print(invalid_list, " were invalid module numbers and were not added")
     module_dict = make_module_dict(filenames_list)
     qa_loop(module_dict)
-
-# start while loop for questions and answers
 
 main()
 
