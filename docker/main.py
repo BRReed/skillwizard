@@ -82,14 +82,24 @@ def qa_loop(module_dict, user_input='0'):
         user_input = input(">")
         if user_input == module_dict[cur_key]:
             answer = user_input
+            answer = '\033[0;32m' + answer + '\033[0m'
         else:
-            answer = wrong_answer_check(user_input)
+            answer = wrong_answer_check(user_input, module_dict[cur_key])
+        print(answer)
 
-def wrong_answer_check(answer):
-    pass
+def wrong_answer_check(answer_given, answer_expected):
+    formatted_answer = ''
+    for i, char in enumerate(answer_given):
+        if i >= len(answer_expected) or char != answer_expected[i]:
+            if char.isspace():
+                formatted_answer += '\033[41m' + char + '\033[0m'
+            else:
+                formatted_answer += '\033[0;31m' + char + '\033[0m'
+        elif char == answer_expected[i]:
+            formatted_answer += '\033[0;32m' + char + '\033[0m'
+    return formatted_answer + " " + answer_expected
+        
 
-
-    
 
 def main():
     welcome_message()
@@ -112,6 +122,8 @@ def main():
         print(invalid_list, " were invalid module numbers and were not added")
     module_dict = make_module_dict(filenames_list)
     qa_loop(module_dict)
+
+# start coloring answers, then start rewriting lines.
 
 main()
 
