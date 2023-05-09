@@ -2,6 +2,7 @@ from csv import reader
 from os import listdir
 from random import choice as rChoice
 
+
 def welcome_message():
     print("""
   ____,__, ,__, __,  __,    _   _,__, ___,  ____,____, ____, 
@@ -35,7 +36,6 @@ def get_selected_csv_filenames_list(modules_list, index_list):
         else:
             invalid_list.append(i)
     return filenames_list, invalid_list
-
 
 def get_csv_info(filename):
     qa_list = []
@@ -98,8 +98,6 @@ def wrong_answer_check(answer_given, answer_expected):
         elif char == answer_expected[i]:
             formatted_answer += '\033[0;32m' + char + '\033[0m'
     return formatted_answer + " " + answer_expected
-        
-
 
 def main():
     welcome_message()
@@ -122,8 +120,6 @@ def main():
         print(invalid_list, " were invalid module numbers and were not added")
     module_dict = make_module_dict(filenames_list)
     qa_loop(module_dict)
-
-# start coloring answers, then start rewriting lines.
 
 main()
 
