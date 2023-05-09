@@ -76,10 +76,10 @@ def make_module_dict(modules_list):
     return d
 
 def qa_loop(module_dict, user_input='0'):
-    while user_input != '-1':
+    while True:
         cur_key = rChoice(list(module_dict.keys()))
         print(cur_key)
-        user_input = input(">")
+        user_input = get_input()
         if user_input == module_dict[cur_key]:
             answer = user_input
             answer = '\033[0;32m' + answer + '\033[0m'
