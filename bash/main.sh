@@ -3,7 +3,7 @@
  
  
  
-print_logo() {
+welcome_message() {
  
 cat <<EOF
  
@@ -48,7 +48,7 @@ get_module_values() {
  
 main() {
  
-    print_logo
+    welcome_message
     declare -A modules
     declare -A QAMap
     get_modules
