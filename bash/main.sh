@@ -72,11 +72,7 @@ populate_module_dict() {
     if [ ${modules[${requested_modules_arr[$i]}]} ]
     then 
       cur_mod=${modules[${requested_modules_arr[$i]}]}
-      echo "Exists"
-      echo $cur_mod
       get_module_values
-    else 
-      echo "Not Available"
     fi
   done
 }
