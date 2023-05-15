@@ -31,7 +31,11 @@ get_modules() {
 
 print_available_modules() {
   local i=0
-  for key in "${!modules[@]}"; do echo "$i - ${modules[$i]}"; i=$((i+1)); done
+  for key in "${!modules[@]}"
+  do
+    echo "$i - ${modules[$i]}"
+    i=$((i+1))
+  done
 }
  
  
