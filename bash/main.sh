@@ -48,18 +48,30 @@ print_available_modules() {
   done
 }
 
+get_input() {
+  read cur_user_input
+  if [ "$cur_user_input" = -1 ]
+  then
+    exit
+  fi
+}
+
 
 main() {
   welcome_message
   declare -A modules
   declare -A module_dict
   get_modules
-  if [ ${#modules} -eq 0 ]
-  then
-    echo "Unable to locate modules."
-    exit
-  fi
-  print_available_modules
+  echo "Enter '-1' at any time to exit"
+  while true
+  do
+        echo "Please enter the module numbers you want to practice separated by a space."
+    print_available_modules
+    get_input
+    requested_modules=$cur_user_input
+    echo $requested_modules
+
+  done
 
 }
 
