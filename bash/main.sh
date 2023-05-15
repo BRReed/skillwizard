@@ -18,12 +18,29 @@ cat <<EOF
 EOF
  
 }
+
+get_modules() {
+  search_dir=./modules
+  local i=0
+  for m in "$search_dir/"*
+  do
+    modules+=( [$i]=$m )
+    i=$((i+1))
+  done
+}
+
+print_available_modules() {
+  local i=0
+  for key in "${!modules[@]}"; do echo "$i - ${modules[$i]}"; i=$((i+1)); done
+}
  
  
 main() {
-    welcome_message
-    declare -A modules
-    declare -A module_dict
+  welcome_message
+  declare -A modules
+  declare -A module_dict
+  get_modules
+  print_available_modules
 }
 
 
