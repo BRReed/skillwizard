@@ -39,6 +39,11 @@ get_modules() {
   done
 }
 
+get_module_values() {
+  while IFS="," read -r question answer; do module_dict+=( [$question]=$answer );
+  done < $cur_mod
+}
+
 print_available_modules() {
   local i=0
   for key in "${!modules[@]}"
@@ -56,11 +61,32 @@ get_input() {
   fi
 }
 
+change_input_to_array() {
+  requested_modules_arr=($requested_modules)
+}
+
+populate_module_dict() {
+  for i in ${!requested_modules_arr[@]}
+  do
+    
+    if [ ${modules[${requested_modules_arr[$i]}]} ]
+    then 
+      cur_mod=${modules[${requested_modules_arr[$i]}]}
+      echo "Exists"
+      echo $cur_mod
+      get_module_values
+    else 
+      echo "Not Available"
+    fi
+  done
+}
+
 
 main() {
   welcome_message
   declare -A modules
   declare -A module_dict
+  declare -a requested_modules_arr
   get_modules
   echo "Enter '-1' at any time to exit"
   while true
@@ -69,7 +95,9 @@ main() {
     print_available_modules
     get_input
     requested_modules=$cur_user_input
-    echo $requested_modules
+    change_input_to_array
+    populate_module_dict
+    for key in "${!module_dict[@]}"; do echo "HERE ${key} - ${module_dict[$key]}"; done #erase
 
   done
 
