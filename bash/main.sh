@@ -3,7 +3,7 @@
  
  
  
-print_logo() {
+welcome_message() {
  
 cat <<EOF
  
@@ -18,50 +18,113 @@ cat <<EOF
 EOF
  
 }
- 
- 
-print_available_modules() {
- 
-    local i=0
-    for key in "${!modules[@]}"; do echo "$i - ${modules[$i]}"; i=$((i+1)); done
-}
- 
+
 get_modules() {
- 
-    search_dir=./modules
-    local i=0
-    for m in "$search_dir/"*
-    do
-        modules+=( [$i]=$m )
-        i=$((i+1))
-    done
+  search_dir=./modules
+  if [ ! -d "$search_dir" ]
+  then
+    echo "Unable to locate module directory"
+    exit
+  fi
+  if  find $search_dir -maxdepth 0 -empty | read v
+  then
+    echo "Unable to locate modules"
+    exit
+  fi
+  local i=0
+  for m in "$search_dir/"*
+  do
+    modules+=( [$i]=$m )
+    i=$((i+1))
+  done
 }
- 
+
 get_module_values() {
- 
-    while IFS="," read -r question answer; do QAMap+=( [$question]=$answer );
-    done < modules/test.csv
- 
+  while IFS="," read -r question answer; do module_dict+=( [$question]=$answer );
+  done < $cur_mod
 }
- 
- 
- 
+
+print_available_modules() {
+  local i=0
+  for key in "${!modules[@]}"
+  do
+    echo "$i - ${modules[$i]}"
+    i=$((i+1))
+  done
+}
+
+get_input() {
+  read cur_user_input
+  if [ "$cur_user_input" = -1 ]
+  then
+    exit
+  fi
+}
+
+change_input_to_array() {
+  requested_modules_arr=($requested_modules)
+}
+
+populate_module_dict() {
+  for i in ${!requested_modules_arr[@]}
+  do
+    
+    if [ ${modules[${requested_modules_arr[$i]}]} ]
+    then 
+      cur_mod=${modules[${requested_modules_arr[$i]}]}
+      get_module_values
+    fi
+  done
+}
+
+qa_loop() {
+  module_size=${#module_dict[@]}
+  declare -a module_keys
+  for key in "${!module_dict[@]}"
+  do
+  module_keys+=( "$key" )
+  
+  done
+  while true
+  do
+    cur_question=${module_keys[RANDOM%$[module_size]]}
+    echo $cur_question
+    cur_answer=${module_dict[$cur_question]}
+    cur_answer="${cur_answer%\"}"
+    cur_answer="${cur_answer#\"}"
+    get_input
+    
+    if [ "$cur_user_input" = "$cur_answer" ]
+    then
+      echo "CORRECT '${cur_answer}' is correct"
+    else
+      echo "INCORRECT '${cur_answer}' was the correct answer"
+    fi
+  done
+}
+
+
 main() {
- 
-    print_logo
-    declare -A modules
-    declare -A QAMap
-    get_modules
+  welcome_message
+  declare -A modules
+  declare -A module_dict
+  declare -a requested_modules_arr
+  get_modules
+  echo "Enter '-1' at any time to exit"
+  while true
+  do
+        echo "Please enter the module numbers you want to practice separated by a space."
     print_available_modules
- 
-    for key in "${!QAMap[@]}"; do echo "${key} - ${QAMap[$key]}"; done
-    echo 'Type the number of the module you would like to practice'
-    read requested_module
-    get_module_values
-    echo -e "\e2A\e[0K two"
-    echo -e "\e1A\e[0K one"
-    echo -e "\e3A\e[0K three"
-    echo -e "\e4A\e[0K four"
+    get_input
+    requested_modules=$cur_user_input
+    change_input_to_array
+    populate_module_dict
+    qa_loop
+
+  done
+
 }
- 
+
+
+
 main
