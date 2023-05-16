@@ -77,6 +77,32 @@ populate_module_dict() {
   done
 }
 
+qa_loop() {
+  module_size=${#module_dict[@]}
+  declare -a module_keys
+  for key in "${!module_dict[@]}"
+  do
+  module_keys+=( "$key" )
+  
+  done
+  while true
+  do
+    cur_question=${module_keys[RANDOM%$[module_size]]}
+    echo $cur_question
+    cur_answer=${module_dict[$cur_question]}
+    cur_answer="${cur_answer%\"}"
+    cur_answer="${cur_answer#\"}"
+    get_input
+    
+    if [ "$cur_user_input" = "$cur_answer" ]
+    then
+      echo "CORRECT '${cur_answer}' is correct"
+    else
+      echo "INCORRECT '${cur_answer}' was the correct answer"
+    fi
+  done
+}
+
 
 main() {
   welcome_message
@@ -93,7 +119,7 @@ main() {
     requested_modules=$cur_user_input
     change_input_to_array
     populate_module_dict
-    for key in "${!module_dict[@]}"; do echo "HERE ${key} - ${module_dict[$key]}"; done #erase
+    qa_loop
 
   done
 
