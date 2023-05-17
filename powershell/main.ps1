@@ -1,3 +1,5 @@
+#!/usr/bin/env pwsh
+
 function Send-WelcomeMessage {
     Write-Host " "
     Write-Host " "
@@ -11,4 +13,11 @@ function Send-WelcomeMessage {
     Write-Host " "
 }
 
-Send-WelcomeMessage
+
+
+
+function Main {
+    Send-WelcomeMessage
+}
+
+Main
