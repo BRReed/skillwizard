@@ -13,11 +13,29 @@ function Send-WelcomeMessage {
     Write-Host " "
 }
 
+function Get-Modules {
+    $curDir = (Get-Location).Path
+    $Subdirectory = "/modules"
+    $moduleDir = Join-Path -Path $curDir -ChildPath $Subdirectory
+
+    if (-not (Test-Path -Path $moduleDir -PathType Container)) {
+        Write-Host "'$moduleDir' does not exist."
+        return
+    }
+    
+    Get-ChildItem -Path $moduleDir -File | Select-Object -ExpandProperty Name
+}
+
+
 
 
 
 function Main {
     Send-WelcomeMessage
+    $modules = @{}
+    $moduleDict = @{}
+    $requestedModulesArr
+    Get-Modules
 }
 
 Main
