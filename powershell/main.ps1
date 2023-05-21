@@ -43,17 +43,50 @@ function Write-Modules {
     }
 }
 
+function Get-Input {
+    $userInput = Read-Host ">"
+    if ( $userInput -eq -1 ) {
+        exit
+    }
+    return $userInput
+}
 
-
-
+function Join-ReqModules {
+    param(
+        [string]$reqModules,
+        [int]$aLen
+    )
+    $reqModulesArr = $reqModules.Split(" ")
+    $reqModulesArrEdit = @()
+    foreach ($module in $reqModulesArr) {
+        if (0 -gt $module -or $module -gt $aLen) {
+            Write-Host "$module is an invalid entry and will be ignored"
+        }
+        else {
+            $reqModulesArrEdit += $module
+        }
+    }
+    return $reqModulesArrEdit
+}
 
 function Main {
     Send-WelcomeMessage
     $modules = @{}
     $moduleDict = @{}
-    $requestedModulesArr = Get-Modules
-    Write-Modules -modulesArr $requestedModulesArr
-    
+    $modulesArr = Get-Modules
+    Write-Host "Enter '-1' at any time to exit"
+    while ($true) {
+        Write-Host "Please enter the module numbers you want to practice separated by a space."
+        Write-Modules -modulesArr $modulesArr
+        $reqModules = Get-Input
+        $reqModulesArr = Join-ReqModules -reqModules $reqModules -aLen ($modulesArr.Length - 1)
+        if ($reqModulesArr.Length -eq 0) {
+            Write-Host "To exit enter '-1' otherwise please enter at least one module"
+        }
+        else {
+            break
+        }
+    }
 }
 
 Main
