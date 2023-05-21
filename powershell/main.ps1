@@ -14,6 +14,7 @@ function Send-WelcomeMessage {
 }
 
 function Get-Modules {
+    $modulesArr = @()
     $curDir = (Get-Location).Path
     $Subdirectory = "/modules"
     $moduleDir = Join-Path -Path $curDir -ChildPath $Subdirectory
@@ -23,7 +24,23 @@ function Get-Modules {
         return
     }
     
-    Get-ChildItem -Path $moduleDir -File | Select-Object -ExpandProperty Name
+    $files = Get-ChildItem -Path $moduleDir -File
+
+    foreach ($file in $files) {
+        $modulesArr += $file.Name
+    }
+    return $modulesArr
+}
+
+function Write-Modules {
+    param(
+        [string[]]$modulesArr
+    )
+    $i = 0
+    foreach ($f in $modulesArr) {
+        Write-Host "$i - $f"
+        $i += 1
+    }
 }
 
 
@@ -34,8 +51,9 @@ function Main {
     Send-WelcomeMessage
     $modules = @{}
     $moduleDict = @{}
-    $requestedModulesArr
-    Get-Modules
+    $requestedModulesArr = Get-Modules
+    Write-Modules -modulesArr $requestedModulesArr
+    
 }
 
 Main
