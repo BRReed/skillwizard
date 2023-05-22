@@ -32,6 +32,28 @@ function Get-Modules {
     return $modulesArr
 }
 
+function Write-ModuleQA {
+    param(
+        [string[]]$modulesArr,
+        [int[]]$reqModules
+    )
+    $moduleDict = @{}
+
+    foreach ($i in $reqModules) {
+        $curPath = "./modules/$($modulesArr[$i])"
+        $curData = Get-Content -Path $curPath
+
+        foreach ($line in $curData) {
+            $curVals = $line -split ","
+            $moduleDict[$curVals[0].Trim('"')] = $curVals[1].Trim('"')
+        }
+
+    }
+    return $moduleDict
+
+
+}
+
 function Write-Modules {
     param(
         [string[]]$modulesArr
@@ -71,8 +93,6 @@ function Join-ReqModules {
 
 function Main {
     Send-WelcomeMessage
-    $modules = @{}
-    $moduleDict = @{}
     $modulesArr = Get-Modules
     Write-Host "Enter '-1' at any time to exit"
     while ($true) {
@@ -87,6 +107,8 @@ function Main {
             break
         }
     }
+    $modulesDict = Write-ModuleQA -modulesArr $modulesArr -reqModules $reqModulesArr
+    # take reqModulesArr, get module q/a and put into moduleDict. Then while loop for game
 }
 
 Main
