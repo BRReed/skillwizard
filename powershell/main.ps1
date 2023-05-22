@@ -18,12 +18,10 @@ function Get-Modules {
     $curDir = (Get-Location).Path
     $Subdirectory = "/modules"
     $moduleDir = Join-Path -Path $curDir -ChildPath $Subdirectory
-
     if (-not (Test-Path -Path $moduleDir -PathType Container)) {
         Write-Host "'$moduleDir' does not exist."
         return
     }
-    
     $files = Get-ChildItem -Path $moduleDir -File
 
     foreach ($file in $files) {
@@ -38,20 +36,15 @@ function Write-ModuleQA {
         [int[]]$reqModules
     )
     $moduleDict = @{}
-
     foreach ($i in $reqModules) {
         $curPath = "./modules/$($modulesArr[$i])"
         $curData = Get-Content -Path $curPath
-
         foreach ($line in $curData) {
             $curVals = $line -split ","
             $moduleDict[$curVals[0].Trim('"')] = $curVals[1].Trim('"')
         }
-
     }
     return $moduleDict
-
-
 }
 
 function Write-Modules {
@@ -91,6 +84,43 @@ function Join-ReqModules {
     return $reqModulesArrEdit
 }
 
+function Format-Answer {
+    param(
+        [string]$userAnswer,
+        [string]$actualAnswer
+    )
+    if ($userAnswer.Length -eq $actualAnswer.Length -or $userAnswer.Length -gt $actualAnswer.Length) {
+        $len = $actualAnswer.Length
+    }
+    else {
+        $len = $userAnswer.Length
+    }
+    $userAnswerArr = $userAnswer.ToCharArray()
+    $actualAnswerArr = $actualAnswer.ToCharArray()
+    for ($i = 0; $i -lt $len; $i++) {
+        if ($userAnswerArr[$i] -eq $actualAnswerArr[$i]) {
+            Write-Host $userAnswerArr[$i] -ForegroundColor Green -NoNewline
+        }
+        elseif ([Char]::IsWhiteSpace($userAnswerArr[$i])) {
+            Write-Host $userAnswerArr[$i] -BackgroundColor Red -NoNewline
+        }
+        else {
+            Write-Host $userAnswerArr[$i] -ForegroundColor Red -NoNewline
+        }
+    }
+    if ($userAnswerArr.Length -gt $len) {
+        for ($i = $len; $i -lt $userAnswerArr.Length; $i++) {
+            if ([Char]::IsWhiteSpace($userAnswerArr[$i])) {
+                Write-Host $userAnswerArr[$i] -BackgroundColor Red -NoNewline
+            }
+            else {
+                Write-Host $userAnswerArr[$i] -ForegroundColor Red -NoNewline
+            }
+        }
+    }
+    Write-Host " $actualAnswer"
+}
+
 function Main {
     Send-WelcomeMessage
     $modulesArr = Get-Modules
@@ -108,7 +138,17 @@ function Main {
         }
     }
     $modulesDict = Write-ModuleQA -modulesArr $modulesArr -reqModules $reqModulesArr
-    # take reqModulesArr, get module q/a and put into moduleDict. Then while loop for game
+    while ($true) {
+        $randomKey = $modulesDict.keys | Get-Random
+        Write-Host $randomKey
+        $userAnswer = Get-Input
+        if ($userAnswer -eq $modulesDict[$randomKey]) {
+            Write-Host $userAnswer -ForegroundColor Green
+        }
+        else {
+            Format-Answer -userAnswer $userAnswer -actualAnswer $modulesDict[$randomKey]
+        }
+    }
 }
 
 Main
