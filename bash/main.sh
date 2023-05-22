@@ -100,6 +100,7 @@ qa_loop() {
     else
       echo "INCORRECT '${cur_answer}' was the correct answer"
     fi
+    echo " "
   done
 }
 
