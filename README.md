@@ -15,7 +15,7 @@
 2. [Installation](#installation) <br>
 2a. [Bash](#bash-installation) <br>
 2b. [PowerShell](#powershell-installation) <br>
-2c. [Docker](#docker-installation)
+2c. [Python](#python-installation)
 
 3. [Adding Modules](#adding-modules)
 
@@ -37,16 +37,34 @@ to your favorite systems, applications, languages, etc. through repetition.
 
 ## **Installation**
 ---
-Installation notes
+The following is required for all installations:
+
+Download the `main.sh, main.ps1` or `main.py` script to a directory of your choosing (i recommend making a directory called `skillwizard`). Download the modules you are interested in trying (or make your own!) to (this part is necessary) a subdirectory called `modules` of the directory you put the `main` script into. 
 
 ### **Bash Installation**
-TBA
+
+In Bash navigate to the directory you saved `main.sh` and enter the command `bash main.sh`.
 
 ### **PowerShell Installation**
-TBA
 
-### **Docker Installation**
-TBA
+Run the command `Get-ExecutionPolicy` in Powershell. Anything other than `Unrestricted` may cause issues. There are a couple paths to getting the script to run. 
+1. Permanently change your Execution Policy (least safe). Open a Powershell instance and enter `Set-ExecutionPolicy -Scope CurrentUser Unrestricted`. Note: You can change the execution policy for all users by excluding `-Scope CurrentUser` from the above command. You will need to be running Powershell as Administrator, and if anyone aside from you uses this machine I can't recommend doing this. 
+2. Temporarily change your Execution Policy (medium safety). Open a powershell instance and type the following  `Set-ExecutionPolicy Bypass -Scope Process` . This will allow you to run the script without any permanent changes being made to your machine. This still carries some risk, as you are running a script from an unknown (me) source. 
+3. Wild West Cowboy no other option (medium safety): If you are unable to do it the other 2 ways but your machine's Execution Policy is `RemoteSigned` you can do the following in exact order. Open `main.ps1` in Notepad. With Notepad still open, delete `main.ps1` from your machine. Go back and save `main.ps1` in Notepad to your same directory. 
+
+In PowerShell navigate to the directory you saved `main.ps1` to and enter the command `./main.ps1`.
+
+
+### **Python Installation**
+
+You must have Python installed on your machine. 
+
+On Windows:
+Enter the command `python --version` into PowerShell. 
+If you do not have Python go [here](https://learn.microsoft.com/en-us/windows/python/beginners#install-python) or enter `python` in PowerShell and Windows will open the Microsoft Store for you. 
+
+On Mac OS and Linux Python is pre-installed.If you are on a Linux distro that doesn't have Python pre-installed you probably don't need my instruction on how to do it.
+
 
 ## **Adding Modules**
 ---
@@ -78,7 +96,7 @@ Please be aware capitalization matters in the answer.
 2. Modules should be limited to 15 question-answer pairs. In my opinion 10 is the 
 sweet spot so if you have 18 question-answer pairs you would like to contribute 
 please consider contributing 2 modules, one for basics and advanced, or a one of
- of two if it is not possible to break it up in basic and advanced questions.
+two if it is not possible to break it up in basic and advanced questions. If you feel your module deserves an exemption please contact me directly with your case.
 
 3. The name of the file should help to easily identify the contents. 
 `vi_movement_commands.csv` is going to be accepted while `vi_commands.csv` would
