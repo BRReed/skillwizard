@@ -14,13 +14,19 @@ def welcome_message():
     )
 
 def get_input():
+    """ Takes input from end user
+
+    """
     i = input(">")
-    if i == "-1":
-        exit()
+    process_string_for_exit(i)
     return i
 
-def get_qa_list():
-    return {}
+def process_string_for_exit(i):
+    """ Processes a string for exit commands
+    """
+    if i in ["-1"]:
+        exit()
+    return
 
 def get_module_csv_list():
     "Returns list of file names from modules subdir"
