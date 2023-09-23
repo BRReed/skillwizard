@@ -23,6 +23,8 @@
 
 5. [Contributing Modules](#contributing-modules)
 
+6. [Future](#future)
+
 
 </details>
 
@@ -101,3 +103,10 @@ two if it is not possible to break it up in basic and advanced questions. If you
 3. The name of the file should help to easily identify the contents. 
 `vi_movement_commands.csv` is going to be accepted while `vi_commands.csv` would
  not.
+
+ ## **Future** 
+
+ 1. Update lines in place so the welcome message doesn't scroll up and you can no longer see past answers during repeats
+ 2. Implement the ability to use special characters
+ 3. colors for posix compliant shell
+ 4. ~~Add License~~ ☑️
