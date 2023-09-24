@@ -14,19 +14,30 @@ def welcome_message():
     )
 
 def get_input():
+    """ Takes input from end user
+        Returns: [str]
+    """
     i = input(">")
-    if i == "-1":
-        exit()
     return i
 
-def get_qa_list():
-    return {}
+def process_string_for_exit(i):
+    """ Checks a string for exit commands
+        Args: i[str]
+    """
+    if i in ["-1"]:
+        exit()
 
 def get_module_csv_list():
-    "Returns list of file names from modules subdir"
+    """ Gets list of files and dirs in modules subdir - non-discerning
+        Returns: [arr] file names in modules subdir. 
+    """
     return [file for file in listdir("./modules")]
 
 def get_selected_csv_filenames_list(modules_list, index_list):
+    """ Gets user selected files
+        Args: modules_list[arr][str], index_list[arr][str/int]
+        Returns: [arr][1] valid selections, [arr][2] invalid selections 
+    """
     filenames_list = []
     invalid_list = []
     for i in index_list:
@@ -38,6 +49,10 @@ def get_selected_csv_filenames_list(modules_list, index_list):
     return filenames_list, invalid_list
 
 def get_csv_info(filename):
+    """ Get question-answer combinations from file
+        Args: filename[str]
+        Returns: [arr] Question and Answer combinations
+    """
     qa_list = []
     with open(filename, newline='') as f:
         r = reader(f, delimiter=',')
@@ -46,10 +61,17 @@ def get_csv_info(filename):
     return qa_list
 
 def print_available_modules(module_list):
+    """ Prints all items in array, numbered
+        Args: module_list[arr]
+    """
     for i, module in enumerate(module_list):
         print(i, ". ", module)
 
 def make_input_list(s):
+    """ Takes input string, separates by space and makes list
+        Args: s[str]
+        Returns: [arr] of s separated by white space "1 24 3" returns [1,24,3]
+    """
     l = []
     cur = ""
     for c in s:
@@ -66,6 +88,10 @@ def make_input_list(s):
     return l
 
 def make_module_dict(modules_list):
+    """Makes hashmap of question:answer combos
+       Args: modules_list[arr]
+       Returns: [hmap] of question:answer combinations
+    """
     d = {}
     for module in modules_list:
         qa_list = get_csv_info(module)
@@ -76,10 +102,13 @@ def make_module_dict(modules_list):
     return d
 
 def qa_loop(module_dict, user_input='0'):
+    """ Main game loop 
+    """
     while True:
         cur_key = rChoice(list(module_dict.keys()))
         print(cur_key)
         user_input = get_input()
+        process_string_for_exit(user_input)
         if user_input == module_dict[cur_key]:
             answer = user_input
             answer = '\033[0;32m' + answer + '\033[0m'
@@ -88,6 +117,10 @@ def qa_loop(module_dict, user_input='0'):
         print(answer)
 
 def wrong_answer_check(answer_given, answer_expected):
+    """ Takes user answer and compares to expected answer 
+        Args: answer_given[str], answer_expected[str]
+        Returns: [str] answer given and answer expected 
+    """
     formatted_answer = ''
     for i, char in enumerate(answer_given):
         if i >= len(answer_expected) or char != answer_expected[i]:
@@ -100,6 +133,7 @@ def wrong_answer_check(answer_given, answer_expected):
     return formatted_answer + " " + answer_expected
 
 def main():
+
     welcome_message()
     module_names = get_module_csv_list()
     if not module_names:
