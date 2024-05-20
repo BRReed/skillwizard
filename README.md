@@ -111,3 +111,6 @@ two if it is not possible to break it up in basic and advanced questions. If you
  3. colors for posix compliant shell
  4. ~~Add License~~ ☑️
  5. Differentiate between directories and files in modules directory. only report CSV files
+    ~~python~~ ☑️
+    bash
+    pwsh
