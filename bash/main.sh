@@ -34,8 +34,11 @@ get_modules() {
   local i=0
   for m in "$search_dir/"*
   do
-    modules+=( [$i]=$m )
-    i=$((i+1))
+    if [ -f "${m}" ]
+    then
+      modules+=( [$i]=$m )
+      i=$((i+1))
+    fi
   done
 }
 
