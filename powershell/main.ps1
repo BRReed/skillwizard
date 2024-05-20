@@ -23,9 +23,11 @@ function Get-Modules {
         return
     }
     $files = Get-ChildItem -Path $moduleDir -File
-
     foreach ($file in $files) {
-        $modulesArr += $file.Name
+        if ($file.PSIsContainer) {
+            Write-Host "is container"
+        }
+        else {$modulesArr += $file.Name}
     }
     return $modulesArr
 }
