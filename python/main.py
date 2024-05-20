@@ -39,7 +39,7 @@ def is_file(file):
     return path_to_file.is_file()
 
 def get_module_csv_list():
-    """ Gets list of files and dirs in modules subdir - non-discerning
+    """ Gets list of files in modules subdir
         Returns: [arr] file names in modules subdir. 
     """
     return [file for file in listdir("./modules") if is_file(file)]
