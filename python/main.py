@@ -1,5 +1,6 @@
 from csv import reader
 from os import listdir
+from pathlib import Path
 from random import choice as rChoice
 
 
@@ -27,11 +28,21 @@ def process_string_for_exit(i):
     if i in ["-1"]:
         exit()
 
+def is_file(file):
+    """ Checks if path is file. True if is file, else False
+        Args: file[str]
+        Returns: [bool]
+    """
+    path_to_file = Path(f"./modules/{file}")
+    print({path_to_file})
+    print(path_to_file.is_file())
+    return path_to_file.is_file()
+
 def get_module_csv_list():
-    """ Gets list of files and dirs in modules subdir - non-discerning
+    """ Gets list of files in modules subdir
         Returns: [arr] file names in modules subdir. 
     """
-    return [file for file in listdir("./modules")]
+    return [file for file in listdir("./modules") if is_file(file)]
 
 def get_selected_csv_filenames_list(modules_list, index_list):
     """ Gets user selected files
